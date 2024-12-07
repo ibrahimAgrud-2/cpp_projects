@@ -1,354 +1,316 @@
-#include<iostream>
-#include<cstdlib>
-#include<string>
-#include<time.h>
+#include <iostream>
+#include <cstdlib>
+#include <string>
+#include <time.h>
 using namespace std;
-/*we don't have many questions,
-so solve them all  one by one*/
-enum soruSeviyeleri { kolay = 1, orta = 2, zor = 3, soruMix = 4 };
-enum islemTurleri { arti = 1, eksi = 2, carpi = 3, bolum = 4, islemTuruMix = 5 };
 
+enum DifficultyLevels { easy = 1, medium = 2, hard = 3, randomDifficulty = 4 };
+enum OperationTypes { addition = 1, subtraction = 2, multiplication = 3, division = 4, randomOperation = 5 };
 
-
-string islemTuruEkranaBasmak(islemTurleri secilenislemTuru)
+// Function to print the operation type symbol (+, -, x, /)
+string printOperationType(OperationTypes selectedOperation)
 {
-    switch (secilenislemTuru)
+    switch (selectedOperation)
     {
-    case arti:
+    case addition:
         return "+";
         break;
-    case eksi:
+    case subtraction:
         return "-";
         break;
-    case carpi:
+    case multiplication:
         return "x";
         break;
-    case bolum:
+    case division:
         return "/";
         break;
 
-
     default:
-        return "\nislemTuruEkranaBasmak sorun var\n";
+        return "\nError in printOperationType\n";
         break;
     }
-
-
 }
-islemTurleri enumislemTuruSecmek()
+
+// Function to allow user to select an operation type
+OperationTypes selectOperationType()
 {
-    short secim;
+    short choice;
     do
     {
-        cout << "islem turu: arti[1],eksi[2],carpi[3],bolum[4],mix[5] ? sayisini seciniz\n";
-        cin >> secim;
-    } while (secim < 1 || secim>5);
+        cout << "Select operation type: addition[1], subtraction[2], multiplication[3], division[4], random[5]: ";
+        cin >> choice;
+    } while (choice < 1 || choice > 5);
 
-    return (islemTurleri)secim;
-
+    return (OperationTypes)choice;
 }
-soruSeviyeleri enumSoruSeviyesiSecmek()
+
+// Function to allow user to select a difficulty level
+DifficultyLevels selectDifficultyLevel()
 {
-    short secim;
+    short choice;
     do
     {
-        cout << "soru seviyesi: kolay[1],orta[2],zor[3],mix[4] sayisini seciniz\n";
-        cin >> secim;
-    } while (secim < 1 || secim>4);
+        cout << "Select difficulty level: easy[1], medium[2], hard[3], random[4]: ";
+        cin >> choice;
+    } while (choice < 1 || choice > 4);
 
-    return (soruSeviyeleri)secim;
-
-
+    return (DifficultyLevels)choice;
 }
 
-
-
-
-int rastgeleSayi(int altSinir, int ustSinir)
+// Function to generate a random number within a given range
+int generateRandomNumber(int lowerBound, int upperBound)
 {
-    return rand() % ((ustSinir - altSinir) + 1) + altSinir;
-
+    return rand() % ((upperBound - lowerBound) + 1) + lowerBound;
 }
 
-void terminalRenk(bool dogru)
+// Function to change the terminal color based on whether the answer is correct or incorrect
+void setTerminalColor(bool isCorrect)
 {
-    if (dogru)
+    if (isCorrect)
     {
-        system("color 2F");
+        system("color 2F");  // Green color for correct answers
     }
     else
     {
-        system("color 4F");
-        cout << "\a";
+        system("color 4F");  // Red color for incorrect answers
+        cout << "\a";  // Beep sound for wrong answer
     }
 }
 
-int soruSayisiAlmak()
+// Function to get the number of questions for the quiz
+int getNumberOfQuestions()
 {
-    int soruSayisi = 0;
-    cout << "test kac soruluk olacak\n";
-    cin >> soruSayisi;
-    return (soruSayisi);
+    int questionCount = 0;
+    cout << "How many questions do you want in the quiz? ";
+    cin >> questionCount;
+    return questionCount;
 }
 
-string tabloyaBasmakicinislemTuru(islemTurleri islemTur)
+// Function to convert operation type to string (for displaying in summary)
+string convertOperationTypeToString(OperationTypes operationType)
 {
-    string islemturu[5] = { "arti","eksi","carpi","bolum" ,"mix" };
-    return islemturu[islemTur - 1];
-
+    string operationTypes[5] = { "addition", "subtraction", "multiplication", "division", "random" };
+    return operationTypes[operationType - 1];
 }
 
-string tabloyaBasmakiciniSoruLeveli(soruSeviyeleri soruLeveli)
+// Function to convert difficulty level to string (for displaying in summary)
+string convertDifficultyLevelToString(DifficultyLevels difficultyLevel)
 {
-    string soruLeveliu[4] = { "kolay","orta","zor","mix" };
-    return soruLeveliu[soruLeveli - 1];
-
+    string difficultyLevels[4] = { "easy", "medium", "hard", "random" };
+    return difficultyLevels[difficultyLevel - 1];
 }
 
-
-struct stSoru
+// Structure to hold the information for each question
+struct Question
 {
-    int sayi1;
-    int say2;
-    soruSeviyeleri soruSevityesi;
-    islemTurleri islemTuru;
-    int dogruCevap;
-    int kullanicininGirdiCevap;
-    bool cevapDogruMu = false;
-
+    int num1;
+    int num2;
+    DifficultyLevels difficultyLevel;
+    OperationTypes operationType;
+    int correctAnswer;
+    int userAnswer;
+    bool isCorrect = false;
 };
 
-struct stSinav
+// Structure to hold the exam information
+struct Exam
 {
-    stSoru diziSoru[100];
-    short soruSayisi;
-    int doguruCevapsayisi = 0;
-    int yanlisCevapSayisi = 0;
-    soruSeviyeleri soruSevityesi2;
-    islemTurleri islemTuru2;
-    bool gectiMi = false;
-
+    Question questions[100];
+    short questionCount;
+    int correctAnswerCount = 0;
+    int incorrectAnswerCount = 0;
+    DifficultyLevels examDifficulty;
+    OperationTypes examOperation;
+    bool passed = false;
 };
 
-int Hesaplayici(int sayi1, int sayi2, islemTurleri  secilenislem)
+// Function to perform the selected operation
+int calculator(int num1, int num2, OperationTypes selectedOperation)
 {
-
-    switch (secilenislem)
+    switch (selectedOperation)
     {
-    case arti:
-        return (sayi1 + sayi2);
-
-
-    case  eksi:
-        return (sayi1 - sayi2);
-
-
-    case bolum:
-        return (sayi1 / sayi2);
-
-    case carpi:
-        return (sayi1 * sayi2);
-
+    case addition:
+        return (num1 + num2);
+    case subtraction:
+        return (num1 - num2);
+    case division:
+        return (num1 / num2);
+    case multiplication:
+        return (num1 * num2);
     default:
         return 999;
-
-
     }
-
 }
 
-soruSeviyeleri rastgeleSoruSeviyesiAlmak()
+// Function to generate a random difficulty level
+DifficultyLevels generateRandomDifficultyLevel()
 {
-    return (soruSeviyeleri)rastgeleSayi(1, 3);
+    return (DifficultyLevels)generateRandomNumber(1, 3);
 }
 
-//1)bu kısımda önceki fonksiyonlardan yararlanarak  tek tek soru ouşturuyoruz
-//bir soru olusturdugumuzu var sayalım
-//bunu dizinin sıfırıncı kutusuna saklıyoruz tum bilgileri ile birlikete 
-//burada stSinav için 5 bilgisini aldık  sayi1,sayi2,soruleveli,islemturu ve dogruCevap değişkenini aldık 
-stSoru soruOlusturmak(soruSeviyeleri soruSeviyesi, islemTurleri islemTuru)
+// Function to create a question based on the selected difficulty level and operation type
+Question createQuestion(DifficultyLevels difficultyLevel, OperationTypes operationType)
 {
-    stSoru olusturulacakSoru;
-    if (soruSeviyesi == soruSeviyeleri::soruMix)
+    Question newQuestion;
+    if (difficultyLevel == DifficultyLevels::randomDifficulty)
     {
-        soruSeviyesi = (soruSeviyeleri)rastgeleSayi(1, 3);
+        difficultyLevel = (DifficultyLevels)generateRandomNumber(1, 3);
     }
-    if (islemTuru == islemTurleri::islemTuruMix)
+    if (operationType == OperationTypes::randomOperation)
     {
-        islemTuru = (islemTurleri)rastgeleSayi(1, 4);
+        operationType = (OperationTypes)generateRandomNumber(1, 4);
     }
-    olusturulacakSoru.islemTuru = islemTuru;
+    newQuestion.operationType = operationType;
 
-    switch (soruSeviyesi)
+    switch (difficultyLevel)
     {
-    case soruSeviyeleri::kolay:
-        olusturulacakSoru.sayi1 = rastgeleSayi(1, 10);
-        olusturulacakSoru.say2 = rastgeleSayi(1, 10);
-        olusturulacakSoru.soruSevityesi = soruSeviyesi;
+    case DifficultyLevels::easy:
+        newQuestion.num1 = generateRandomNumber(1, 10);
+        newQuestion.num2 = generateRandomNumber(1, 10);
+        newQuestion.difficultyLevel = difficultyLevel;
+        newQuestion.correctAnswer = calculator(newQuestion.num1, newQuestion.num2, newQuestion.operationType);
+        return newQuestion;
 
-        olusturulacakSoru.dogruCevap = Hesaplayici(olusturulacakSoru.sayi1, olusturulacakSoru.say2, olusturulacakSoru.islemTuru);
-        return olusturulacakSoru;
+    case DifficultyLevels::medium:
+        newQuestion.num1 = generateRandomNumber(11, 50);
+        newQuestion.num2 = generateRandomNumber(11, 50);
+        newQuestion.difficultyLevel = difficultyLevel;
+        newQuestion.correctAnswer = calculator(newQuestion.num1, newQuestion.num2, newQuestion.operationType);
+        return newQuestion;
 
-
-
-    case soruSeviyeleri::orta:
-        olusturulacakSoru.sayi1 = rastgeleSayi(11, 50);
-        olusturulacakSoru.say2 = rastgeleSayi(11, 50);
-        olusturulacakSoru.soruSevityesi = soruSeviyesi;
-
-        olusturulacakSoru.dogruCevap = Hesaplayici(olusturulacakSoru.sayi1, olusturulacakSoru.say2, olusturulacakSoru.islemTuru);
-        return olusturulacakSoru;
-
-
-    case soruSeviyeleri::zor:
-        olusturulacakSoru.sayi1 = rastgeleSayi(51, 99);
-        olusturulacakSoru.say2 = rastgeleSayi(51, 99);
-        olusturulacakSoru.soruSevityesi = soruSeviyesi;
-
-        olusturulacakSoru.dogruCevap = Hesaplayici(olusturulacakSoru.sayi1, olusturulacakSoru.say2, olusturulacakSoru.islemTuru);
-        return olusturulacakSoru;
-
-   
+    case DifficultyLevels::hard:
+        newQuestion.num1 = generateRandomNumber(51, 99);
+        newQuestion.num2 = generateRandomNumber(51, 99);
+        newQuestion.difficultyLevel = difficultyLevel;
+        newQuestion.correctAnswer = calculator(newQuestion.num1, newQuestion.num2, newQuestion.operationType);
+        return newQuestion;
     }
-
-
 }
 
-
-
-//2)bir ustteki fonksiyonu kullanarak oluşturduğumuz soruları burada dizinin kutularına yerleştiriyoruz
-void sinavOlustur(stSinav& sinav)
+// Function to create an exam by generating questions and storing them
+void createExam(Exam& exam)
 {
-    for (int soru = 0; soru < sinav.soruSayisi; soru++)
+    for (int i = 0; i < exam.questionCount; i++)
     {
-        sinav.diziSoru[soru] = soruOlusturmak(sinav.soruSevityesi2, sinav.islemTuru2);
+        exam.questions[i] = createQuestion(exam.examDifficulty, exam.examOperation);
     }
-
 }
 
-int soruCevapAlmak()
+// Function to get the user's answer to a question
+int getUserAnswer()
 {
-    int cevap = 0;
-    cin >> cevap;
-    return cevap;
+    int answer = 0;
+    cin >> answer;
+    return answer;
 }
 
-void soruYazdir(stSinav& sinav, short soruNumarasi)
+// Function to display a question to the user
+void displayQuestion(Exam& exam, short questionNumber)
 {
     cout << "\n";
-    cout << "soru [" << soruNumarasi + 1 << "/" << sinav.soruSayisi << "]\n\n";
-    cout << sinav.diziSoru[soruNumarasi].sayi1 << endl;
-    cout << sinav.diziSoru[soruNumarasi].say2 << " ";
-    cout << islemTuruEkranaBasmak(sinav.diziSoru[soruNumarasi].islemTuru);
+    cout << "Question [" << questionNumber + 1 << "/" << exam.questionCount << "]\n\n";
+    cout << exam.questions[questionNumber].num1 << endl;
+    cout << exam.questions[questionNumber].num2 << " ";
+    cout << printOperationType(exam.questions[questionNumber].operationType);
     cout << "\n______________" << endl;
 }
-void cevapKarsilastirmak(stSinav& sinav, short soruNumarasi)
+
+// Function to compare the user's answer with the correct answer
+void compareAnswer(Exam& exam, short questionNumber)
 {
-
-
-    if (sinav.diziSoru[soruNumarasi].kullanicininGirdiCevap != sinav.diziSoru[soruNumarasi].dogruCevap)
+    if (exam.questions[questionNumber].userAnswer != exam.questions[questionNumber].correctAnswer)
     {
-        sinav.diziSoru[soruNumarasi].cevapDogruMu = false;
-        sinav.yanlisCevapSayisi++;
-        cout << "hatali cevap\n";
-        cout << "dogru cevap: ";
-        cout << sinav.diziSoru[soruNumarasi].dogruCevap;
+        exam.questions[questionNumber].isCorrect = false;
+        exam.incorrectAnswerCount++;
+        cout << "Incorrect answer\n";
+        cout << "Correct answer: ";
+        cout << exam.questions[questionNumber].correctAnswer;
         cout << "\n";
-
     }
     else
     {
-        sinav.diziSoru[soruNumarasi].cevapDogruMu = true;
-        sinav.doguruCevapsayisi++;
-        cout << "cevap dogru :-)\n";
+        exam.questions[questionNumber].isCorrect = true;
+        exam.correctAnswerCount++;
+        cout << "Correct answer :-)\n";
     }
     cout << endl;
-    terminalRenk(sinav.diziSoru[soruNumarasi].cevapDogruMu);
-
+    setTerminalColor(exam.questions[questionNumber].isCorrect);
 }
 
-//3)burada ise önceki adımda  doldurulmuş olan soru cevapları ile kullanıcıdan alacağımız soru cevapların
-//karşılaştırıyoruz
-//burada stSinav'ın son 2 değişkenini aldık kullanicininGirdiCevap ve gectiMi
-void soruSormakVelistelemek(stSinav& sinav)
+// Function to ask the questions and check the user's answers
+void askQuestionsAndCheck(Exam& exam)
 {
-    //burada soruNUmarasi yerine "i " gibi düşün
-    for (short soruNUmarasi = 0; soruNUmarasi < sinav.soruSayisi; soruNUmarasi++)
+    for (short questionNumber = 0; questionNumber < exam.questionCount; questionNumber++)
     {
-
-        soruYazdir(sinav, soruNUmarasi);
-        sinav.diziSoru[soruNUmarasi].kullanicininGirdiCevap = soruCevapAlmak();
-        cevapKarsilastirmak(sinav, soruNUmarasi);
-
+        displayQuestion(exam, questionNumber);
+        exam.questions[questionNumber].userAnswer = getUserAnswer();
+        compareAnswer(exam, questionNumber);
     }
-    sinav.gectiMi = (sinav.doguruCevapsayisi >= sinav.yanlisCevapSayisi);
-
+    exam.passed = (exam.correctAnswerCount >= exam.incorrectAnswerCount);
 }
 
-string sonKontrol(bool gecmek)
+// Function to print the result summary
+string finalStatus(bool passed)
 {
-    if (gecmek)
+    if (passed)
     {
-        return "gecti :-)";
-
+        return "Passed :-)";
     }
     else
-        return "kaldi :-) ";
+        return "Failed :-(";
 }
-void soucTablosuYazdir(stSinav sinav)
+
+// Function to print the result table
+void printResultTable(Exam exam)
 {
     cout << "\n";
     cout << "__________________________\n\n";
-   
-          cout<<sonKontrol(sinav.gectiMi)<<endl;
+    cout << finalStatus(exam.passed) << endl;
     cout << "__________________________\n\n";
-     cout << "ozet: "<<endl;
-    cout << "soru numarsi: " << sinav.soruSayisi << endl;
-    cout << "soru leveli : " << tabloyaBasmakiciniSoruLeveli(sinav.soruSevityesi2) << endl;
-    cout << "islem turu  : " << tabloyaBasmakicinislemTuru(sinav.islemTuru2) << endl;
-    cout << "dogru cevap sayisi :" << sinav.doguruCevapsayisi << endl;
-    cout << "yanlis cevap cevap sayisi: " << sinav.yanlisCevapSayisi << endl;
+    cout << "Summary:\n";
+    cout << "Number of questions: " << exam.questionCount << endl;
+    cout << "Difficulty level: " << convertDifficultyLevelToString(exam.examDifficulty) << endl;
+    cout << "Operation type: " << convertOperationTypeToString(exam.examOperation) << endl;
+    cout << "Correct answer count: " << exam.correctAnswerCount << endl;
+    cout << "Incorrect answer count: " << exam.incorrectAnswerCount << endl;
     cout << "___________________________\n\n";
-
 }
-void oyunisleyisi()
+
+// Function to run the game
+void runGame()
 {
-    stSinav sinav;
-    sinav.soruSayisi = soruSayisiAlmak();
-    sinav.soruSevityesi2 = enumSoruSeviyesiSecmek();
-    sinav.islemTuru2 = enumislemTuruSecmek();
-    sinavOlustur(sinav);
-    soruSormakVelistelemek(sinav);
-    soucTablosuYazdir(sinav);
-
-
+    Exam exam;
+    exam.questionCount = getNumberOfQuestions();
+    exam.examDifficulty = selectDifficultyLevel();
+    exam.examOperation = selectOperationType();
+    createExam(exam);
+    askQuestionsAndCheck(exam);
+    printResultTable(exam);
 }
 
-void terminalReset()
+// Function to reset the terminal screen and color
+void resetTerminal()
 {
     system("cls");
     system("color 0F");
-
 }
-void basla()
+
+// Main function to start the game
+void start()
 {
-    char tekrarOynamak = 'e';
+    char playAgain = 'y';
     do
     {
-        terminalReset();
-        oyunisleyisi();
-        cout << "tekrar oynayalim mi? E/H\n";
-        cin >> tekrarOynamak;
-    } while (tekrarOynamak == 'e' || tekrarOynamak == 'E');
-
+        resetTerminal();
+        runGame();
+        cout << "Do you want to play again? Y/N\n";
+        cin >> playAgain;
+    } while (playAgain == 'y' || playAgain == 'Y');
 }
+
 int main()
 {
     srand((unsigned)time(NULL));
-
-    basla();
+    start();
     return 0;
-
-
-
 }
