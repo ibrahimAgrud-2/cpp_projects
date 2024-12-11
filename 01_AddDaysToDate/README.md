@@ -10,28 +10,37 @@ This program takes a date input (day, month, year) from the user and allows them
 Functions Explained
 
    ◽ short readYear()
+
     Reads the year input from the user and returns it.
 
    ◽ short readMounth()
+
     Reads the month input from the user and returns it.
 
    ◽ short ReadDay()
+
     Reads the day input from the user and returns it.
 
    ◽ stDate readFullDate()
+
     Reads the full date (day, month, year) by calling the above functions and stores it in a stDate structure.
 
    ❗ bool isLeapYear(short year)
+     The most important fuction 
     Checks if the given year is a leap year.
 
    ◽ int numberDaysInMounth(short Month, short year)
+
     Returns the number of days in a given month, accounting for February’s leap year adjustment.
 
    ◽ short totalDaysFromTheBigrnYear(short Day, short Month, short Year)
+
     Calculates the total days passed since the start of the year up to the given date.
 
    ❗ stDate addDayToDate(short totalDays, stDate date)
-    Adds a specific number of days to a given date. Adjusts the day, month, and year as needed.
+  
+  The most important fuction 
+   Adds a specific number of days to a given date. Adjusts the day, month, and year as needed.
 
 How It Works
 
