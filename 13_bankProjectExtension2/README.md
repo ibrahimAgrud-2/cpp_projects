@@ -11,10 +11,13 @@ Without this knowledge, the logic behind certain functionalities may be challeng
 
 Suggested Resources on Bitwise Operations
 
-   https://youtu.be/YJgnYQEhYBw?si=5pTlyii7uXCDEkTd
-   https://youtu.be/o_33wfgN0PY?si=jGul_pnLPQrpEiHr
-   https://youtu.be/Xhy3RdWIgpI?si=6pbml65f2iwmXjVe
-   https://youtu.be/hkhtfz2aHcg?si=qFDJAOd8j1DqdMyn
+  ◽ https://youtu.be/YJgnYQEhYBw?si=5pTlyii7uXCDEkTd
+
+  ◽ https://youtu.be/o_33wfgN0PY?si=jGul_pnLPQrpEiHr
+
+  ◽ https://youtu.be/Xhy3RdWIgpI?si=6pbml65f2iwmXjVe
+
+  ◽ https://youtu.be/hkhtfz2aHcg?si=qFDJAOd8j1DqdMyn
 
 
 Features Overview
