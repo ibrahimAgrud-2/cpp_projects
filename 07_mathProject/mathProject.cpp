@@ -1,354 +1,291 @@
+
+
 #include<iostream>
-#include<cstdlib>
-#include<string>
-#include<time.h>
 using namespace std;
-/*we don't have many questions,
-so solve them all  one by one*/
-enum soruSeviyeleri { kolay = 1, orta = 2, zor = 3, soruMix = 4 };
-enum islemTurleri { arti = 1, eksi = 2, carpi = 3, bolum = 4, islemTuruMix = 5 };
-
-
-
-string islemTuruEkranaBasmak(islemTurleri secilenislemTuru)
-{
-    switch (secilenislemTuru)
-    {
-    case arti:
-        return "+";
-        break;
-    case eksi:
-        return "-";
-        break;
-    case carpi:
-        return "x";
-        break;
-    case bolum:
-        return "/";
-        break;
-
-
-    default:
-        return "\nislemTuruEkranaBasmak sorun var\n";
-        break;
-    }
-
-
-}
-islemTurleri enumislemTuruSecmek()
-{
-    short secim;
-    do
-    {
-        cout << "islem turu: arti[1],eksi[2],carpi[3],bolum[4],mix[5] ? sayisini seciniz\n";
-        cin >> secim;
-    } while (secim < 1 || secim>5);
-
-    return (islemTurleri)secim;
-
-}
-soruSeviyeleri enumSoruSeviyesiSecmek()
-{
-    short secim;
-    do
-    {
-        cout << "soru seviyesi: kolay[1],orta[2],zor[3],mix[4] sayisini seciniz\n";
-        cin >> secim;
-    } while (secim < 1 || secim>4);
-
-    return (soruSeviyeleri)secim;
-
-
-}
-
-
-
-
-int rastgeleSayi(int altSinir, int ustSinir)
-{
-    return rand() % ((ustSinir - altSinir) + 1) + altSinir;
-
-}
-
-void terminalRenk(bool dogru)
-{
-    if (dogru)
-    {
-        system("color 2F");
-    }
-    else
-    {
-        system("color 4F");
-        cout << "\a";
-    }
-}
-
-int soruSayisiAlmak()
-{
-    int soruSayisi = 0;
-    cout << "test kac soruluk olacak\n";
-    cin >> soruSayisi;
-    return (soruSayisi);
-}
-
-string tabloyaBasmakicinislemTuru(islemTurleri islemTur)
-{
-    string islemturu[5] = { "arti","eksi","carpi","bolum" ,"mix" };
-    return islemturu[islemTur - 1];
-
-}
-
-string tabloyaBasmakiciniSoruLeveli(soruSeviyeleri soruLeveli)
-{
-    string soruLeveliu[4] = { "kolay","orta","zor","mix" };
-    return soruLeveliu[soruLeveli - 1];
-
-}
-
-
-struct stSoru
-{
-    int sayi1;
-    int say2;
-    soruSeviyeleri soruSevityesi;
-    islemTurleri islemTuru;
-    int dogruCevap;
-    int kullanicininGirdiCevap;
-    bool cevapDogruMu = false;
-
+enum enQuestionsLevel {
+	EasyLevel = 1, MedLevel = 2, HardLevel =
+	3, Mix = 4
 };
-
-struct stSinav
-{
-    stSoru diziSoru[100];
-    short soruSayisi;
-    int doguruCevapsayisi = 0;
-    int yanlisCevapSayisi = 0;
-    soruSeviyeleri soruSevityesi2;
-    islemTurleri islemTuru2;
-    bool gectiMi = false;
-
+enum enOperationType {
+	Add = 1, Sub = 2, Mult = 3, Div = 4, MixOp
+	= 5
 };
-
-int Hesaplayici(int sayi1, int sayi2, islemTurleri  secilenislem)
+string GetOpTypeSymbol(enOperationType OpType)
 {
-
-    switch (secilenislem)
-    {
-    case arti:
-        return (sayi1 + sayi2);
-
-
-    case  eksi:
-        return (sayi1 - sayi2);
-
-
-    case bolum:
-        return (sayi1 / sayi2);
-
-    case carpi:
-        return (sayi1 * sayi2);
-
-    default:
-        return 999;
-
-
-    }
-
+	switch (OpType)
+	{
+	case enOperationType::Add:
+		return "+";
+	case enOperationType::Sub:
+		return "-";
+	case enOperationType::Mult:
+		return "x";
+	case enOperationType::Div:
+		return "/";
+	default:
+		return "Mix";
+	}
+}
+string GetQuestionLevelText(enQuestionsLevel QuestionLevel)
+{
+	string arrQuestionLevelText[4] = { "Easy","Med","Hard","Mix"
+	};
+	return arrQuestionLevelText[QuestionLevel - 1];
+}
+int RandomNumber(int From, int To)
+{
+	//Function to generate a random number
+	int randNum = rand() % (To - From + 1) + From;
+	return randNum;
 }
 
-soruSeviyeleri rastgeleSoruSeviyesiAlmak()
+void SetScreenColor(bool Right)
 {
-    return (soruSeviyeleri)rastgeleSayi(1, 3);
+	if (Right)
+		system("color 2F"); //turn screen to Green
+	else
+	{
+		system("color 4F"); //turn screen to Red
+		cout << "\a";
+	}
+}
+short ReadHowManyQuestions()
+{
+	short NumberOfQuestions;
+	do
+	{
+		cout << "How Many Questions do you want to answer ? ";
+		cin >> NumberOfQuestions;
+	} while (NumberOfQuestions < 1 || NumberOfQuestions >10);
+	return NumberOfQuestions;
+}
+enQuestionsLevel ReadQuestionsLevel()
+{
+	short QuestionLevel = 0;
+	do
+	{
+		cout << "Enter Questions Level [1] Easy, [2] Med, [3]	Hard, [4] Mix ? ";
+			cin >> QuestionLevel;
+	} while (QuestionLevel < 1 || QuestionLevel >4);
+	return (enQuestionsLevel)QuestionLevel;
+}
+enOperationType ReadOpType()
+{
+	short OpType;
+	do
+	{
+		cout << "Enter Operation Type [1] Add, [2] Sub, [3] Mul,	[4] Div, [5] Mix ? ";
+			cin >> OpType;
+	} while (OpType < 1 || OpType >5);
+	return (enOperationType)OpType;
 }
 
-//1)bu kısımda önceki fonksiyonlardan yararlanarak  tek tek soru ouşturuyoruz
-//bir soru olusturdugumuzu var sayalım
-//bunu dizinin sıfırıncı kutusuna saklıyoruz tum bilgileri ile birlikete 
-//burada stSinav için 5 bilgisini aldık  sayi1,sayi2,soruleveli,islemturu ve dogruCevap değişkenini aldık 
-stSoru soruOlusturmak(soruSeviyeleri soruSeviyesi, islemTurleri islemTuru)
+struct stQuestion
 {
-    stSoru olusturulacakSoru;
-    if (soruSeviyesi == soruSeviyeleri::soruMix)
-    {
-        soruSeviyesi = (soruSeviyeleri)rastgeleSayi(1, 3);
-    }
-    if (islemTuru == islemTurleri::islemTuruMix)
-    {
-        islemTuru = (islemTurleri)rastgeleSayi(1, 4);
-    }
-    olusturulacakSoru.islemTuru = islemTuru;
-
-    switch (soruSeviyesi)
-    {
-    case soruSeviyeleri::kolay:
-        olusturulacakSoru.sayi1 = rastgeleSayi(1, 10);
-        olusturulacakSoru.say2 = rastgeleSayi(1, 10);
-        olusturulacakSoru.soruSevityesi = soruSeviyesi;
-
-        olusturulacakSoru.dogruCevap = Hesaplayici(olusturulacakSoru.sayi1, olusturulacakSoru.say2, olusturulacakSoru.islemTuru);
-        return olusturulacakSoru;
-
-
-
-    case soruSeviyeleri::orta:
-        olusturulacakSoru.sayi1 = rastgeleSayi(11, 50);
-        olusturulacakSoru.say2 = rastgeleSayi(11, 50);
-        olusturulacakSoru.soruSevityesi = soruSeviyesi;
-
-        olusturulacakSoru.dogruCevap = Hesaplayici(olusturulacakSoru.sayi1, olusturulacakSoru.say2, olusturulacakSoru.islemTuru);
-        return olusturulacakSoru;
-
-
-    case soruSeviyeleri::zor:
-        olusturulacakSoru.sayi1 = rastgeleSayi(51, 99);
-        olusturulacakSoru.say2 = rastgeleSayi(51, 99);
-        olusturulacakSoru.soruSevityesi = soruSeviyesi;
-
-        olusturulacakSoru.dogruCevap = Hesaplayici(olusturulacakSoru.sayi1, olusturulacakSoru.say2, olusturulacakSoru.islemTuru);
-        return olusturulacakSoru;
-
-   
-    }
-
-
+	int Number1 = 0;
+	int Number2 = 0;
+	enOperationType OperationType;
+	enQuestionsLevel QuestionLevel;
+	int CorrectAnswer = 0;
+	int PlayerAnswer = 0;
+	bool AnswerResult = false;
+};
+struct stQuizz
+{
+	stQuestion QuestionList[100];
+	short NumberOfQuestions;
+	enQuestionsLevel QuestionsLevel;
+	enOperationType OpType;
+	short NumberOfWrongAnswers = 0;
+	short NumberOfRightAnswers = 0;
+	bool isPass = false;
+};
+int SimpleCalculator(int Number1, int Number2, enOperationType
+	OpType)
+{
+	switch (OpType)
+	{
+	case enOperationType::Add:
+		return Number1 + Number2;
+	case enOperationType::Sub:
+		return Number1 - Number2;
+	case enOperationType::Mult:
+		return Number1 * Number2;
+	case enOperationType::Div:
+		return Number1 / Number2;
+	default:
+		return Number1 + Number2;
+	}
+}
+enOperationType GetRandomOperationType()
+{
+	int Op = RandomNumber(1, 4);
+	return (enOperationType)Op;
 }
 
-
-
-//2)bir ustteki fonksiyonu kullanarak oluşturduğumuz soruları burada dizinin kutularına yerleştiriyoruz
-void sinavOlustur(stSinav& sinav)
+stQuestion GenerateQuestion(enQuestionsLevel QuestionLevel,
+	enOperationType OpType)
 {
-    for (int soru = 0; soru < sinav.soruSayisi; soru++)
-    {
-        sinav.diziSoru[soru] = soruOlusturmak(sinav.soruSevityesi2, sinav.islemTuru2);
-    }
-
+	stQuestion Question;
+	if (QuestionLevel == enQuestionsLevel::Mix)
+	{
+		QuestionLevel = (enQuestionsLevel)RandomNumber(1, 3);
+	}
+	if (OpType == enOperationType::MixOp)
+	{
+		OpType = GetRandomOperationType();
+	}
+	Question.OperationType = OpType;
+	switch (QuestionLevel)
+	{
+	case enQuestionsLevel::EasyLevel:
+		Question.Number1 = RandomNumber(1, 10);
+		Question.Number2 = RandomNumber(1, 10);
+		Question.CorrectAnswer =
+			SimpleCalculator(Question.Number1, Question.Number2,
+				Question.OperationType);
+		Question.QuestionLevel = QuestionLevel;
+		return Question;
+	case enQuestionsLevel::MedLevel:
+		Question.Number1 = RandomNumber(10, 50);
+		Question.Number2 = RandomNumber(10, 50);
+		Question.CorrectAnswer =
+			SimpleCalculator(Question.Number1, Question.Number2,
+				Question.OperationType);
+		Question.QuestionLevel = QuestionLevel;
+		return Question;
+		
+	case enQuestionsLevel::HardLevel:
+		Question.Number1 = RandomNumber(50, 100);
+		Question.Number2 = RandomNumber(50, 100);
+		Question.CorrectAnswer =
+			SimpleCalculator(Question.Number1, Question.Number2,
+				Question.OperationType);
+		Question.QuestionLevel = QuestionLevel;
+		return Question;
+	}
+	return Question;
+}
+void GenerateQuizzQuestions(stQuizz& Quizz)
+{
+	for (short Question = 0; Question < Quizz.NumberOfQuestions;
+		Question++)
+	{
+		Quizz.QuestionList[Question] =
+			GenerateQuestion(Quizz.QuestionsLevel, Quizz.OpType);
+	}
+}
+int ReadQuestionAnswer()
+{
+	int Answer = 0;
+	cin >> Answer;
+	return Answer;
+}
+void PrintTheQuestion(stQuizz& Quizz, short QuestionNumber)
+{
+	cout << "\n";
+	cout << "Question [" << QuestionNumber + 1 << "/" <<
+		Quizz.NumberOfQuestions << "] \n\n";
+	cout << Quizz.QuestionList[QuestionNumber].Number1 << endl;
+	cout << Quizz.QuestionList[QuestionNumber].Number2 << " ";
+	cout <<
+		GetOpTypeSymbol(Quizz.QuestionList[QuestionNumber].OperationType);
+	cout << "\n_________" << endl;
 }
 
-int soruCevapAlmak()
+void CorrectTheQuestionAnswer(stQuizz & Quizz, short
+	QuestionNumber)
 {
-    int cevap = 0;
-    cin >> cevap;
-    return cevap;
+	if (Quizz.QuestionList[QuestionNumber].PlayerAnswer !=
+		Quizz.QuestionList[QuestionNumber].CorrectAnswer)
+	{
+		Quizz.QuestionList[QuestionNumber].AnswerResult = false;
+		Quizz.NumberOfWrongAnswers++;
+		cout << "Worng Answer :-( \n";
+		cout << "The right answer is: ";
+		cout << Quizz.QuestionList[QuestionNumber].CorrectAnswer;
+		cout << "\n";
+	}
+	else
+	{
+		Quizz.QuestionList[QuestionNumber].AnswerResult = true;
+		Quizz.NumberOfRightAnswers++;
+		cout << "Right Answer :-) \n";
+	}
+	cout << endl;
+	SetScreenColor(Quizz.QuestionList[QuestionNumber].AnswerResult);
+}
+void AskAndCorrectQuestionListAnswers(stQuizz& Quizz)
+{
+	for (short QuestionNumber = 0; QuestionNumber <
+		Quizz.NumberOfQuestions; QuestionNumber++)
+	{
+		PrintTheQuestion(Quizz, QuestionNumber);
+		Quizz.QuestionList[QuestionNumber].PlayerAnswer =
+			ReadQuestionAnswer();
+		CorrectTheQuestionAnswer(Quizz, QuestionNumber);
+	}
+	Quizz.isPass = (Quizz.NumberOfRightAnswers >=
+		Quizz.NumberOfWrongAnswers);
 }
 
-void soruYazdir(stSinav& sinav, short soruNumarasi)
+string GetFinalResultsText(bool Pass)
 {
-    cout << "\n";
-    cout << "soru [" << soruNumarasi + 1 << "/" << sinav.soruSayisi << "]\n\n";
-    cout << sinav.diziSoru[soruNumarasi].sayi1 << endl;
-    cout << sinav.diziSoru[soruNumarasi].say2 << " ";
-    cout << islemTuruEkranaBasmak(sinav.diziSoru[soruNumarasi].islemTuru);
-    cout << "\n______________" << endl;
+	if (Pass)
+		return "PASS :-)";
+	else
+		return "Fail :-(";
 }
-void cevapKarsilastirmak(stSinav& sinav, short soruNumarasi)
+void PrintQuizzResults(stQuizz Quizz)
 {
-
-
-    if (sinav.diziSoru[soruNumarasi].kullanicininGirdiCevap != sinav.diziSoru[soruNumarasi].dogruCevap)
-    {
-        sinav.diziSoru[soruNumarasi].cevapDogruMu = false;
-        sinav.yanlisCevapSayisi++;
-        cout << "hatali cevap\n";
-        cout << "dogru cevap: ";
-        cout << sinav.diziSoru[soruNumarasi].dogruCevap;
-        cout << "\n";
-
-    }
-    else
-    {
-        sinav.diziSoru[soruNumarasi].cevapDogruMu = true;
-        sinav.doguruCevapsayisi++;
-        cout << "cevap dogru :-)\n";
-    }
-    cout << endl;
-    terminalRenk(sinav.diziSoru[soruNumarasi].cevapDogruMu);
-
+	cout << "\n";
+	cout << "______________________________\n\n";
+	cout << " Final Resutls is " <<
+		GetFinalResultsText(Quizz.isPass);
+	cout << "\n______________________________\n\n";
+	cout << "Number of Questions: " << Quizz.NumberOfQuestions <<
+		endl;
+	cout << "Questions Level : " <<
+		GetQuestionLevelText(Quizz.QuestionsLevel) << endl;
+	cout << "OpType : " <<
+		GetOpTypeSymbol(Quizz.OpType) << endl;
+	cout << "Number of Right Answers: " <<
+		Quizz.NumberOfRightAnswers << endl;
+	cout << "Number of Wrong Answers: " <<
+		Quizz.NumberOfWrongAnswers << endl;
+	cout << "______________________________\n";
 }
-
-//3)burada ise önceki adımda  doldurulmuş olan soru cevapları ile kullanıcıdan alacağımız soru cevapların
-//karşılaştırıyoruz
-//burada stSinav'ın son 2 değişkenini aldık kullanicininGirdiCevap ve gectiMi
-void soruSormakVelistelemek(stSinav& sinav)
+void PlayMathGame()
 {
-    //burada soruNUmarasi yerine "i " gibi düşün
-    for (short soruNUmarasi = 0; soruNUmarasi < sinav.soruSayisi; soruNUmarasi++)
-    {
-
-        soruYazdir(sinav, soruNUmarasi);
-        sinav.diziSoru[soruNUmarasi].kullanicininGirdiCevap = soruCevapAlmak();
-        cevapKarsilastirmak(sinav, soruNUmarasi);
-
-    }
-    sinav.gectiMi = (sinav.doguruCevapsayisi >= sinav.yanlisCevapSayisi);
-
+	stQuizz Quizz;
+	Quizz.NumberOfQuestions = ReadHowManyQuestions();
+	Quizz.QuestionsLevel = ReadQuestionsLevel();
+	Quizz.OpType = ReadOpType();
+	GenerateQuizzQuestions(Quizz);
+	AskAndCorrectQuestionListAnswers(Quizz);
+	PrintQuizzResults(Quizz);
 }
 
-string sonKontrol(bool gecmek)
+void ResetScreen()
 {
-    if (gecmek)
-    {
-        return "gecti :-)";
-
-    }
-    else
-        return "kaldi :-) ";
+	system("cls");
+	system("color 0F");
 }
-void soucTablosuYazdir(stSinav sinav)
+void StartGame()
 {
-    cout << "\n";
-    cout << "__________________________\n\n";
-   
-          cout<<sonKontrol(sinav.gectiMi)<<endl;
-    cout << "__________________________\n\n";
-     cout << "ozet: "<<endl;
-    cout << "soru numarsi: " << sinav.soruSayisi << endl;
-    cout << "soru leveli : " << tabloyaBasmakiciniSoruLeveli(sinav.soruSevityesi2) << endl;
-    cout << "islem turu  : " << tabloyaBasmakicinislemTuru(sinav.islemTuru2) << endl;
-    cout << "dogru cevap sayisi :" << sinav.doguruCevapsayisi << endl;
-    cout << "yanlis cevap cevap sayisi: " << sinav.yanlisCevapSayisi << endl;
-    cout << "___________________________\n\n";
-
-}
-void oyunisleyisi()
-{
-    stSinav sinav;
-    sinav.soruSayisi = soruSayisiAlmak();
-    sinav.soruSevityesi2 = enumSoruSeviyesiSecmek();
-    sinav.islemTuru2 = enumislemTuruSecmek();
-    sinavOlustur(sinav);
-    soruSormakVelistelemek(sinav);
-    soucTablosuYazdir(sinav);
-
-
-}
-
-void terminalReset()
-{
-    system("cls");
-    system("color 0F");
-
-}
-void basla()
-{
-    char tekrarOynamak = 'e';
-    do
-    {
-        terminalReset();
-        oyunisleyisi();
-        cout << "tekrar oynayalim mi? E/H\n";
-        cin >> tekrarOynamak;
-    } while (tekrarOynamak == 'e' || tekrarOynamak == 'E');
-
+	char PlayAgain = 'Y';
+	do
+	{
+		ResetScreen();
+		PlayMathGame();
+		cout << endl << "Do you want to play again? Y/N? ";
+		cin >> PlayAgain;
+	} while (PlayAgain == 'Y' || PlayAgain == 'y');
 }
 int main()
 {
-    srand((unsigned)time(NULL));
-
-    basla();
-    return 0;
-
-
-
+	//Seeds the random number generator in C++, called only once
+	srand((unsigned)time(NULL));
+	StartGame();
+	return 0;
 }
