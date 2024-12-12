@@ -1,8 +1,14 @@
 
 
-⚠⚠
+
 
 ![testFoto](resim.jpg)
+
+
+
+
+
+⚠⚠
 
 First 15  projects focused on foundational programming concepts.
 
