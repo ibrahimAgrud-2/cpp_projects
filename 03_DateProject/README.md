@@ -1,34 +1,32 @@
 Date Calculation Program
 
-This project reads date information from the user, such as day, month, and year, to calculate details like the day of the week, business day status, weekend status, and remaining days until the end of the month and year. To understand this project, you need a basic understanding of programming concepts, particularly structures (struct).
+This project is designed to read date information such as day, month, and year from the user, and calculate various details, including:
+
+    The day of the week
+    Whether the date is a business day or falls on the weekend
+    The remaining days until the end of the month and year
+
+To fully understand this project, a basic understanding of programming concepts, especially structures (struct), is recommended.
 Features
+1. Date Input
 
-This program includes the following features:
+The program takes the day, month, and year from the user and stores the information in a stDate structure.
+2. Leap Year Check
 
-    Date Reading: Reads day, month, and year information from the user.
-    Leap Year Check: Determines if the given year is a leap year.
-    Day of the Week: Calculates which day of the week the given date falls on.
-    Weekend Check: Determines if the date is a business day or falls on the weekend.
-    Remaining Days in Month/Year: Calculates how many days are left until the end of the month and the end of the year from the given date.
+The program determines whether the given year is a leap year.
+3. Day of the Week Calculation
 
-Usage
+The DayOfWeekOrder function calculates which day of the week the given date falls on, and the DayShortName function provides the short name of the day (e.g., "Mon", "Tue").
+4. Business Day and Weekend Check
 
-    Date Input:
-        The program takes day, month, and year inputs from the user and stores them in a stDate structure.
+The isEndOfWeek, isWeekEnd, and isBusinessDay functions check whether the date falls on a weekend or is a business day.
+5. Days Until End of Month/Year
 
-    Day of the Week Calculation:
-        The DayOfWeekOrder function returns the weekday order of the date, and DayShortName provides the short day name (e.g., "Mon", "Tue").
-
-    Business Day and Weekend Determination:
-        The functions isEndOfWeek, isWeekEnd, and isBusinnesDay check whether the date falls on a weekend or a business day.
-
-    Days Until End of Month/Year:
-        The functions daysUntillEndOfMonth and daysUntillEndOfYear calculate how many days remain until the end of the month and year from the given date.
-
+The daysUntilEndOfMonth and daysUntilEndOfYear functions calculate how many days are left until the end of the month and the end of the year from the given date.
 Important Notes
+1. Input Validation Not Included
 
-    Validation Not Included:
-        No input validation is implemented in this project. Therefore, if you enter data other than a number where a number is expected, you may encounter errors.
+This program does not include input validation. If you enter data other than numbers where numbers are expected, errors may occur.
+2. Required Knowledge
 
-    Required Knowledge:
-        To understand this code, it's recommended to have a basic understanding of struct and fundamental programming concepts.
+To fully understand the code, it is recommended to have a basic understanding of structs and fundamental programming concepts.
