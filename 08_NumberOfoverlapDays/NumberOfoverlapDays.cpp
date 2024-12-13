@@ -15,9 +15,9 @@ void clear() {
 enum enCompereDate { before = -1, equals = 0, after = 1 };
 struct stDate
 {
-    int year;
-    int months;
-    int days;
+    int Year;
+    int Month;
+    int Day;
 
 };
 bool isLeapYear(int year)
@@ -36,7 +36,7 @@ bool isLeapYear(int year)
      return true;
     }*/
     //return false; /
-        return ((year % 400 == 0) || ((year % 100 != 0) && (year % 4 == 0)));
+    return ((year % 400 == 0) || ((year % 100 != 0) && (year % 4 == 0)));
 
 }
 int numberDaysInMounth(int Month, int year)
@@ -47,51 +47,46 @@ int numberDaysInMounth(int Month, int year)
     return ((Month == 2) ? ((isLeapYear(year) ? 29 : 28)) : (arrDays[Month - 1]));
 
 }
-int readYear()
-{
-    int num;
-    cout << "enter a Year\n";
-    cin >> num;
-    return   num;
-}
-int ReadDay()
+short ReadDay()
 {
     short Day;
-    cout << "enter a Day\n";
+    cout << "\nPlease enter a Day? ";
     cin >> Day;
     return Day;
 }
-int readMounth()
+short ReadMonth()
 {
-    int num;
-    cout << "enter a Mounth\n";
-    cin >> num;
-    return num;
+    short Month;
+    cout << "Please enter a Month? ";
+    cin >> Month;
+    return Month;
 }
-
+short ReadYear()
+{
+    short Year;
+    cout << "Please enter a Year? ";
+    cin >> Year;
+    return Year;
+}
 stDate readFullDate()
 {
-    stDate date;
-
-
-
-    date.days = ReadDay();
-    date.months = readMounth();
-    date.year = readYear();
-    return date;
+    stDate Date;
+    Date.Day = ReadDay();
+    Date.Month = ReadMonth();
+    Date.Year = ReadYear();
+    return Date;
 }
-
 
 
 bool IsDate1BeforeDate2(stDate Date1, stDate Date2)
 {
-    return (Date1.year < Date2.year) ? true : ((Date1.year ==
-        Date2.year) ? (Date1.months < Date2.months ? true : (Date1.months ==
-            Date2.months ? Date1.days < Date2.days : false)) : false);
+    return (Date1.Year < Date2.Year) ? true : ((Date1.Year ==
+        Date2.Year) ? (Date1.Month < Date2.Month ? true : (Date1.Month ==
+            Date2.Month ? Date1.Day < Date2.Day : false)) : false);
 }
 bool IsDate1EqualsDate2(stDate date1, stDate date2)
 {
-    return(date1.year == date2.year) ? (date1.months == date2.months) ? (date1.days == date2.days) ? true : false : false : false;
+    return(date1.Year == date2.Year) ? (date1.Month == date2.Month) ? (date1.Day == date2.Day) ? true : false : false : false;
 
 }
 
@@ -105,7 +100,7 @@ void swapDates(stDate& date1, stDate& date2)
 
 bool isLastDayInMonth(stDate date)
 {
-    return (date.days == numberDaysInMounth(date.months, date.year));
+    return (date.Day == numberDaysInMounth(date.Month, date.Year));
 }
 bool isLastMonthInyear(short month)
 {
@@ -115,21 +110,21 @@ stDate IncreaseDateByOneDay(stDate Date)
 {
     if (isLastDayInMonth(Date))
     {
-        if (isLastMonthInyear(Date.months))
+        if (isLastMonthInyear(Date.Month))
         {
-            Date.months = 1;
-            Date.days = 1;
-            Date.year++;
+            Date.Month = 1;
+            Date.Day = 1;
+            Date.Year++;
         }
         else
         {
-            Date.days = 1;
-            Date.months++;
+            Date.Day = 1;
+            Date.Month++;
         }
     }
     else
     {
-        Date.days++;
+        Date.Day++;
     }
     return Date;
 }
@@ -154,7 +149,7 @@ int getDifferenceIndays(stDate date1, stDate date2, bool includeLastDay = false)
 
 
 
- 
+
 enCompereDate CompereDates(stDate date1, stDate date2)
 {
     return (IsDate1BeforeDate2(date1, date2) ? enCompereDate::before : (IsDate1EqualsDate2(date1, date2) ? enCompereDate::equals : enCompereDate::after));
@@ -169,9 +164,9 @@ struct stDatePeriod
 stDatePeriod readDatePeriod()
 {
     stDatePeriod periods;
-    cout << "Enter start date :\n";
+    cout << "\n**Enter start date :\n";
     periods.startDate = readFullDate();
-    cout << "Enter end date :\n";
+    cout << "\n***Enter end date :\n";
     periods.endDate = readFullDate();
 
     return periods;
@@ -211,40 +206,40 @@ bool IsPeriodIncludeDate(stDatePeriod period, stDate date)
 short countOverlapDays(stDatePeriod period1, stDatePeriod period2)
 {
 
-     short Period1Length=getDifferenceIndays(period1.startDate,period1.endDate,true);
-     short Period2Length=getDifferenceIndays(period2.startDate, period2.endDate,true);
+    short Period1Length = getDifferenceIndays(period1.startDate, period1.endDate, true);
+    short Period2Length = getDifferenceIndays(period2.startDate, period2.endDate, true);
     short countOverlapDay = 0;
-      if (!isPeriodsOverlap(period1, period2))
-              return 0;
-    if (Period1Length< Period2Length)
-     {
-         while (IsDate1BeforeDate2(period1.startDate,period1.endDate))
-     {
-             if (IsPeriodIncludeDate(period2,period1.startDate))
-             {
-                 countOverlapDay++;
-         }
-             period1.startDate = IncreaseDateByOneDay(period1.startDate);
-      }
+    if (!isPeriodsOverlap(period1, period2))
+        return 0;
+    if (Period1Length < Period2Length)
+    {
+        while (IsDate1BeforeDate2(period1.startDate, period1.endDate))
+        {
+            if (IsPeriodIncludeDate(period2, period1.startDate))
+            {
+                countOverlapDay++;
+            }
+            period1.startDate = IncreaseDateByOneDay(period1.startDate);
+        }
 
     }
-      else
-     {
-         while (IsDate1BeforeDate2(period2.startDate, period2.endDate))
-         {
-             if (IsPeriodIncludeDate(period1, period2.startDate))
-             {
-                 countOverlapDay++;
-             }
-          period2.startDate = IncreaseDateByOneDay(period2.startDate);
-         }
+    else
+    {
+        while (IsDate1BeforeDate2(period2.startDate, period2.endDate))
+        {
+            if (IsPeriodIncludeDate(period1, period2.startDate))
+            {
+                countOverlapDay++;
+            }
+            period2.startDate = IncreaseDateByOneDay(period2.startDate);
+        }
 
-     }
-     return countOverlapDay;
+    }
+    return countOverlapDay;
 
 
 
-   
+
 
 }
 int main()
@@ -253,9 +248,9 @@ int main()
 
     cout << "--> period 1 :\n";
     stDatePeriod period1 = readDatePeriod();
-    cout << "--> period 2 :\n";
+    cout << "\n\n--> period 2 :\n";
     stDatePeriod period2 = readDatePeriod();
-    cout << countOverlapDays(period1, period2)<<endl;
+    cout <<"\n\nThe number of overlap days is : " << countOverlapDays(period1, period2) << endl;
 
-    return 0;
+    return 0;
 }
