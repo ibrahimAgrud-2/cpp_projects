@@ -3,7 +3,7 @@
 #include<vector>
 using namespace std;
 
-vector<string> splitString(string wordToSplit,string spreator)
+vector<string> splitString(string wordToSplit,string spreator="#//#")
 {   
     vector<string>vStirng;
 
@@ -29,8 +29,8 @@ vector<string> splitString(string wordToSplit,string spreator)
 }
 int main()
 {
-string word="my name is android";
-vector<string>vString=splitString(word," ");
+string word="CROS#//#PLATFORM#//#PORTABLE";
+vector<string>vString=splitString(word,"#//#");
 for(string i:vString)
 {
 cout<<i<<endl;
