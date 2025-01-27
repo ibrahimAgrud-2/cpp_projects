@@ -1,6 +1,6 @@
 
 
-![testFoto](C:\Users\ibrah\Desktop\forgit2\17_bankProjectUsingOOP\diagram1.jpg)
+![testFoto](diagram1.webp)
 
 # Bank Client Management System (OOP Version)
 
