@@ -2,6 +2,8 @@
 
 ⚠⚠
 
+![testFoto](resim1.webp)
+
 This repository contains 15 C++ projects focused on foundational programming concepts.
 
  These projects were written using functional programming principles,
