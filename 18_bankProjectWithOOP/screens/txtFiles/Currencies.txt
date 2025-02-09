@@ -1,0 +1,21 @@
+United States of America#//#USD#//#US Dollar#//#1.000
+Afghanistan#//#AFN#//#Afghanistan Afghani#//#87.480003
+Turkey#//#TRY#//#Turkish Lira#//#40.000000
+Turkmenistan#//#TMT#//#Turkmenistan Manat#//#3.500000
+Turks and Caicos Island#//#USD#//#US Dollar#//#1.000000
+Tuvalu#//#AUD#//#Australian Dollar#//#1.451000
+Uganda#//#UGX#//#Uganda Shilling#//#3690.669922
+Ukraine#//#UAH#//#Ukraine Hryvnia#//#37.000000
+United Arab Emirates#//#AED#//#United Arab Emirates Dirham#//#3.673000
+United Kingdom#//#GBP#//#U.K. Pound#//#0.804000
+Uruguay#//#UYU#//#Uruguay Peso#//#38.525002
+Uzbekistan#//#UZS#//#Uzbekistan Sum#//#11245.000000
+Vanuatu#//#VUV#//#Vanuatu Vatu#//#114.830002
+Venezuela#//#VES#//#Bolivar Digital#//#13.596000
+Viet Nam#//#VND#//#Viet Nam Dong#//#23624.000000
+Virgin Islands (UK)#//#USD#//#US Dollar#//#1.000000
+Virgin Islands (USA)#//#USD#//#US Dollar#//#1.000000
+Wallis and Futuna Islands#//#XPF#//#CFP Franc#//#111.954002
+"Yemen, Republic of"#//#YER#//#Yemeni Rial#//#541.750000
+Zambia#//#ZMW#//#Zambia Kwacha#//#17.440001
+Zimbabwe#//#ZWL#//#Zimbabwe RTGS dollar#//#645.414001
