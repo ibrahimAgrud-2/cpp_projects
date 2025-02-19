@@ -10,18 +10,10 @@
 
 ⚠⚠
 
-This repository contains 15 C++ projects focused on foundational programming concepts.
+This repository contains C++ projects focused on foundational programming concepts.
 
-First 15  projects focused on foundational programming concepts.
+These projects developed with sustainability, ease of development, and extensibility in mind, allowing for future modifications and feature additions with **minimal effort**.
 
- These projects were written using functional programming principles,
+All projects were written using the **divide and conquer** approach to break problems into smaller, manageable parts. This method helps in structuring code more effectively and understanding problem-solving strategies better.
 
- meaning no class structures or advanced C++ features were used. Instead,
-
- the emphasis was placed on basic concepts to help build a strong understanding of programming fundamentals.
-
-Although these projects can be further improved by incorporating classes, 
-
-advanced C++ tools, and techniques, the goal here was to concentrate on simpler approaches.
-
- Additionally, please note that these projects may contain bugs or errors.
+Additionally, please note that these projects may contain bugs or errors.
