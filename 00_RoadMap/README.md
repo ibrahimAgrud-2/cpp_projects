@@ -50,7 +50,7 @@ Veri yapıları (liste, yığın, kuyruk vb.) teorik ve pratik olarak öğrenild
 
 #### 13. **Algorithms Level 5**
 
-12.kursta öğrendiğimiz kavramları problemlerlepekiştirdik.
+12.kursta öğrendiğimiz kavramları problemlerle pekiştirdik.
 
 #### 14. **C# Level 1**
 
