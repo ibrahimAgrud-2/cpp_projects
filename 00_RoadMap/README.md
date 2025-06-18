@@ -1,4 +1,4 @@
-![Road map](RoadMap.jpg)
+![Road map](Road_Map.png)
 
 #### 01. **Foundations Level 1**
 
